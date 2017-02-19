@@ -1,0 +1,68 @@
+{
+  "students": [{
+    "name": "Megan",
+    "studentId": 1,
+    "highSchool": "UU",
+    "collegeAcceptedInto": "UU",
+    "collegesInterestedIn": "UU,YY",
+    "contact": {
+      "cellPhone": "222-222-2222",
+      "email": "megan@gmail.com",
+      "homePhone": "111-111-1111"
+    },
+    "interactions": [{
+      "date": {
+        "day": "02/18/2017",
+        "time": "12:55",
+        "timeZone": "Central"
+      },
+      "media": "SMS",
+      "notes": "Call me back.."
+    }, {
+      "date": {
+        "day": "02/18/2017",
+        "time": "14:55",
+        "timeZone": "Central"
+      },
+      "media": "SMS",
+      "notes": "Call me back again.."
+    }],
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  }, {
+    "name": "Krystal",
+    "studentId": 2,
+    "highSchool": "UU",
+    "collegeAcceptedInto": "UU",
+    "collegesInterestedIn": "UU,YY",
+    "contact": {
+      "cellPhone": "222-222-2222",
+      "email": "kystal@gmail.com",
+      "homePhone": "111-111-1111"
+    },
+    "interactions": [{
+      "date": {
+        "day": "02/18/2017",
+        "time": "12:55",
+        "timeZone": "Central"
+      },
+      "media": "SMS",
+      "notes": "Call me back.."
+    }, {
+      "date": {
+        "day": "02/18/2017",
+        "time": "14:55",
+        "timeZone": "Central"
+      },
+      "media": "SMS",
+      "notes": "Call me back again.."
+    }],
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  }]
+
+}
