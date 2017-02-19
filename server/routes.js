@@ -1,5 +1,7 @@
 var students = require('../routes/students');
 
+var messages = require('../routes/newMessages');
+
 module.exports = function(app) {
 
     app.get('/', function(req, res) {
@@ -14,9 +16,12 @@ module.exports = function(app) {
 
     });
 
-     app.get('/students/:studentId', function(req, res) {
-        var studentsArray = students.getStudents();
-        res.send(JSON.stringify(studentsArray));
+     app.get('/messages', function(req, res) {
+         var messagesArray = messages.getMessages((messagesArray) => {
+            console.log(messagesArray);
+            res.send(JSON.stringify(messagesArray));
+        });
+
     });
 
 
