@@ -7,8 +7,11 @@ module.exports = function(app) {
     });
 
     app.get('/students', function(req, res) {
-        var studentsArray = students.getStudents();
-        res.send(JSON.stringify(studentsArray));
+        var studentsArray = students.getStudents((studentsArray) => {
+            console.log(studentsArray);
+            res.send(JSON.stringify(studentsArray));
+        });
+
     });
 
      app.get('/students/:studentId', function(req, res) {
@@ -18,3 +21,4 @@ module.exports = function(app) {
 
 
 }
+
