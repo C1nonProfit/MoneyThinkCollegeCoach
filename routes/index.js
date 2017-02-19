@@ -1,22 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-//const students = require('./students');
-const data = require('../students.json');
-
-routes.use('/students', students);
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('dashboard', { title: 'College Coach' });
+  res.render('index', { title: 'College Couch' });
 });
 
-module.exports = (req, res) => {
-  const students = data.cars;
+router.post('/login', function(req, res, next) {
+    var userName = req.body.userName;
+    var password = req.body.password;
+    if(userName === "counselor1" && password === "Password1") {
+        res.json({"token" : "azHasAIas12dAsdY1Au123ag1hy12", "loginState" : "success"});
+    } else {
+        res.status(500).json({"loginState" : "failed"});
+    }
+});
 
-  res.status(200).json({ cars });
-};
-
-
+router.get('/dashboard', function(req, res, next) {
+    res.render('dashboard', { title: 'College Couch' });
+});
 
 module.exports = router;
