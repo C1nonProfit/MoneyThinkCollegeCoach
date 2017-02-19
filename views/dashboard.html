@@ -19,38 +19,73 @@
     <script src="../public/angular-1.6.1/angular.min.js"></script>
     <script src="../public/angular-1.6.1/angular-animate.js"></script>
     <script src="../public/angular-1.6.1/angular-cookies.min.js"></script>
+    <script src="../public/js-common/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
   </head>
-  <body ng-app="ndDashBoard">
-    <div ng-controller="ngDashBoardCtrl" class="container">
+  <body ng-app="ndDashBoard" ng-controller="ngDashBoardCtrl">
+    <div class="container" >
       <div ng-include="'../include/nav-bar.html'"></div>
       <div style="height: 10px"></div>
-      <div style="height: 5px"></div>
-      <div class="row">
+      <div class="row" ng-show="checkUnreadMessage()">
+        <div class="col-md-12">
+          <div class="alert alert-info alert-dismissable">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" data-toggle="tooltip" title="Hide" >&times;</a>
+            <strong><i class="fa fa-bell" aria-hidden="true"></i> Notification : </strong>You have Unread SMS from Students.
+          </div>
+        </div>
+      </div>
+      <div class="row" >
         <div class="col-md-12">
           <div class="panel panel-warning panel-collapse">
-            <div class="panel-heading"><span style="font-size: 18px" class="text-warning"><b>Message Center</b></span></div>
+            <div class="panel-heading">
+              <span style="font-size: 18px; color: #ff9e01" class="text-warning"><b>Message Center</b></span>
+              <span class="pull-right clickable" style="color: #ff9e01"><i class="glyphicon glyphicon-chevron-up"></i></span>
+            </div>
             <div class="panel-body">
               <table class="table table-responsive" id="messageCenter">
                 <thead>
                 <tr>
-                  <th>Phone Number</th>
-                  <th>Student Name</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Message</th>
+                  <th>Action</th>
+                  <th class="column-search">
+                    <span>Phone Number</span><br>
+                    <input class="column-search-input-md form-control"/>
+                  </th>
+                  <th>
+                    <span>Name <i class="fa fa-sort" aria-hidden="true"></i></span><br>
+                    <input class="column-search-input-md form-control"/>
+                  </th>
+                  <th>
+                    <span>Date <i class="fa fa-sort" aria-hidden="true"></i></span><br>
+                    <input class="column-search-input-sm form-control"/>
+                  </th>
+                  <th>
+                    <span>Time <i class="fa fa-sort" aria-hidden="true"></i></span><br>
+                    <input class="column-search-input-sm form-control"/>
+                  </th>
+                  <th>
+                    <span>Message</span><br>
+                    <input class="column-search-input-lg form-control"/>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="im in incomingMessages" class="clickable-row" ng-class="im.read === true ? 'message-unread' : 'message-read'">
+                  <tr ng-repeat="im in incomingMessages" class="clickable-row" ng-class="im.read === true ? 'message-unread' : ''" >
                     <td>
-                      <i ng-show="im.presentInSystem === true" class="fa fa-user text-success" aria-hidden="true"></i>
-                      <i ng-show="im.presentInSystem === false" class="fa fa-user text-danger" aria-hidden="true"></i>
+                      <span class="action-icon" ng-show="im.read === false" data-toggle="tooltip" title="Mark read"><i><i class="fa fa-commenting-o" aria-hidden="true"></i></i></span>
+                      <span class="action-icon" ng-show="im.read === true" data-toggle="tooltip" title=" Mark unread"><i><i class="fa fa-commenting" aria-hidden="true"></i></i></span>
+                      <span class="action-icon" data-toggle="tooltip" title="Delete"><i class="fa fa-trash" aria-hidden="true"></i></span>
+                      <span class="action-icon" ng-show="im.flag === false"  data-toggle="tooltip" title="Click to flag"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                      <span class="action-icon" ng-show="im.flag === true" style="color: red" data-toggle="tooltip" title="Click to mark completed"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                    </td>
+                    <td ng-click="viewOrCreateStudentProfile()">
+                      <span ng-show="im.presentInSystem === true" data-toggle="tooltip" title="Student exist in system"><i class="fa fa-user text-success" aria-hidden="true"></i></span>
+                      <span ng-show="im.presentInSystem === false" data-toggle="tooltip" title="Student doesn't in system "><i class="fa fa-user text-danger" aria-hidden="true"></i></span>
                       <span>{{im.phoneNumber}}</span>
                     </td>
-                    <td>{{im.studentName}}</td>
-                    <td>{{im.date}}</td>
-                    <td>{{im.time}}</td>
-                    <td>{{im.message}}</td>
+                    <td ng-click="viewOrCreateStudentProfile()">{{im.studentName}}</td>
+                    <td ng-click="viewOrCreateStudentProfile()">{{im.date}}</td>
+                    <td ng-click="viewOrCreateStudentProfile()">{{im.time}}</td>
+                    <td ng-click="viewOrCreateStudentProfile()">{{im.message}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -62,23 +97,46 @@
       <div class="row">
         <div class="col-md-12">
           <div class="panel panel-success panel-collapse">
-            <div class="panel-heading"><span style="font-size: 18px;"><b>Student Center</b></span></div>
+            <div class="panel-heading">
+              <span style="font-size: 18px;"><b>Student Center</b></span>
+              <span class="pull-right clickable" ><i class="glyphicon glyphicon-chevron-up"></i></span>
+            </div>
             <div class="panel-body">
               <table class="table table-responsive">
                 <thead>
                 <tr>
-                  <th>Student Name</th>
-                  <th>Last Interaction Date</th>
-                  <th>Time</th>
-                  <th>Tags</th>
+                  <th>Actions</th>
+                  <th>
+                    <span>Name <i class="fa fa-sort" aria-hidden="true"></i></span><br>
+                    <input class="column-search-input-md form-control"/>
+                  </th>
+                  <th>
+                    <span>Last Interaction Date & Time <i class="fa fa-sort" aria-hidden="true"></i></span><br>
+                    <input class="column-search-input-xlg form-control"/>
+                  </th>
+                  <th>
+                    <span>Latest Notes</span><br>
+                    <input class="column-search-input-xlg form-control"/>
+                  </th>
+                  <th>
+                    <span>Tags</span><br>
+                    <input class="column-search-input-lg form-control"/>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="im in incomingMessages">
-                  <td><a href="#"><i ng-show="im.isPresentInSystem === 'Y'" class="fa fa-user text-success" aria-hidden="true"></i> {{im.phoneNumber}}</a></td>
-                  <td>{{im.studentName}}</td>
-                  <td>{{im.date}}</td>
-                  <td>{{im.time}}</td>
+                <tr ng-repeat="student in students">
+                  <td>
+                    <span class="action-icon" ng-show="student.flag === false"  data-toggle="tooltip" title="Click to flag"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                    <span class="action-icon" ng-show="student.flag === true" style="color: red" data-toggle="tooltip" title="Click to mark completed"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                  </td>
+                  <td>{{student.name}}</td>
+                  <td ng-show="student.interactions == undefined || student.interactions.length === 0"><span>No Interactions Happened</span></td>
+                  <td ng-show="student.interactions != undefined && student.interactions.length != 0"><span>{{student.interactions[student.interactions.length-1].date.day}}</span><span style="padding-left: 20px;">{{student.interactions[student.interactions.length-1].date.time}}</span></td>
+                  <td ng-show="student.interactions == undefined || student.interactions.length === 0"><span>No Latest Notes</span></td>
+                  <td ng-show="student.interactions != undefined && student.interactions.length != 0"><span>{{student.interactions[student.interactions.length-1].message}}</span></td>
+                  <td ng-show="student.tags == undefined || student.tags.length === 0"><span>No Tags Associated</span></td>
+                  <td ng-show="student.tags != undefined && student.tags.length != 0"><span>{{student.tags.toString()}}</span></td>
                 </tr>
                 </tbody>
               </table>

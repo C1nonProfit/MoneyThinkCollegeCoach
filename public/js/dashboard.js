@@ -3,49 +3,86 @@
  */
 
 
-var app = angular.module('ndDashBoard', ['ngAnimate', 'ngCookies']);
+var app = angular.module('ndDashBoard', ['ngAnimate', 'ngCookies', 'ui.bootstrap']);
 
-app.controller('ngDashBoardCtrl' , function ($scope, $http) {
+app.controller('ngDashBoardCtrl' , function ($scope, $rootScope ,$http, $uibModal) {
 
 
 
-    $scope.init = function () {
-        this.incomingMessages =
-            [
-                {
-                    "phoneNumber" : "312-555-1234",
-                    "presentInSystem" : true,
-                    "studentName" : "Mickey Mouse",
-                    "date" : "02/14/2017",
-                    "time" : "7:27 AM",
-                    "message" : "College student #Support",
-                    "read" : false,
-                    "couchName" : "counselor1"
-                },
-                {
-                    "phoneNumber" : "312-555-1267",
-                    "presentInSystem" : false,
-                    "studentName" : "Unknown",
-                    "date" : "02/13/2017",
-                    "time" : "8:27 AM",
-                    "message" : "Student #Support",
-                    "read" : false,
-                    "couchName" : "counselor1"
-                },
-                {
-                    "phoneNumber" : "312-555-1267",
-                    "presentInSystem" : true,
-                    "studentName" : "Donald Duck",
-                    "date" : "02/13/2017",
-                    "time" : "8:27 AM",
-                    "message" : "Student #Support",
-                    "read" : true,
-                    "couchName" : "counselor1"
-                }
-            ];
+    $http.get('/dashboard/init/incomingMessages').then(function (res) {
+        $scope.incomingMessages = res.data.incomingMessages;
+    }, function (res) {
+        console.log(res);
+    });
+
+    $http.get('/dashboard/init/students').then(function (res) {
+        $scope.students = res.data.students;
+    }, function (res) {
+        console.log(res);
+    });
+
+
+    $scope.checkUnreadMessage = function () {
+        if(this.incomingMessages == undefined)
+            return;
+        for(var i = 0; i < this.incomingMessages.length; i++){
+            if(this.incomingMessages[i].read === false){
+                return true;
+            }
+        }
+        return false;
     };
 
-    $scope.init();
+    $scope.viewOrCreateStudentProfile = function(_flag, _studentId) {
+
+        var viewOrCreateStudent = $uibModal.open({
+            templateUrl: 'public/templates/viewOrCreateStudent.html',
+            controller: 'viewOrCreateStudent',
+            backdrop: 'static',
+            size: 'lg',
+            windowClass: 'my-modal',
+            resolve: {
+                flag: function () {
+                    return _flag;
+                },
+                studentId: function () {
+                    return _studentId;
+                }
+            }
+        });
+
+        viewOrCreateStudent.rendered.then(function () {
+
+        });
+
+        viewOrCreateStudent.result.then(function (result) {
+            console.log(result);
+        });
+    }
+
+});
+
+
+$(document).on('click', '.panel-heading span.clickable', function(event){
+    var $this = $(this);
+    if(!$this.hasClass('panel-collapsed')) {
+        $this.parents('.panel').find('.panel-body').slideUp();
+        $this.addClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+    } else {
+        $this.parents('.panel').find('.panel-body').slideDown();
+        $this.removeClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+    }
+    event.preventDefault();
+});
+
+app.controller('viewOrCreateStudent' , function ($scope, $http, $uibModalStack, flag, studentId) {
+
+    $scope.cancel = function () {
+        $uibModalStack.dismissAll('cancel');
+    };
+
 });
 
 

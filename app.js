@@ -4,9 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongo = require('mongodb');
+var db = require('monk')('localhost:27017/collegeCoach');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var dashboard = require('./routes/dashboard');
 
 var app = express();
 
@@ -25,8 +28,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '.')));
 app.use(express.static(path.join(__dirname, 'views/include')));
 
+app.use(function (req, res, next) {
+    if(db != undefined) {
+      console.log("db connected...");
+    }
+    req.db = db;
+    next();
+});
+
 app.use('/', index);
 app.use('/users', users);
+app.use('/dashboard', dashboard);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,5 +56,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+var config = require('./routes/db/createRequiredConfig');
+config.createConfig(db);
 
 module.exports = app;

@@ -9,11 +9,17 @@ router.get('/', function(req, res, next) {
 router.post('/login', function(req, res, next) {
     var userName = req.body.userName;
     var password = req.body.password;
-    if(userName === "counselor1" && password === "Password1") {
-        res.json({"token" : "azHasAIas12dAsdY1Au123ag1hy12", "loginState" : "success"});
-    } else {
-        res.status(500).json({"loginState" : "failed"});
-    }
+    var db = req.db;
+    var userAccess = db.get("user_access");
+    userAccess.find({}, {}, function (err, userAccessDoc) {
+        if(!err) {
+            if(userAccessDoc == undefined || userAccessDoc.length === 0) {
+                res.status(500).json({"loginState" : "failed"});
+            } else {
+                res.json({"token" : "azHasAIas12dAsdY1Au123ag1hy12", "loginState" : "success", "loginUser" : userAccessDoc});
+            }
+        }
+    });
 });
 
 router.get('/dashboard', function(req, res, next) {

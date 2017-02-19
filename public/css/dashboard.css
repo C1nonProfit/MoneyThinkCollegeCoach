@@ -28,10 +28,56 @@
     color: #ff9e01 !important;;
 }
 
-#messageCenter tr:hover {
+#messageCenter tbody tr:hover {
+    cursor: pointer;
     background-color: #e7e7e7;
 }
 
-.message-unread {
-
+.action-icon {
+    padding-left: 2px;
+    padding-right: 2px;
+    cursor: pointer;
 }
+
+.message-unread {
+    font-weight: bold;
+}
+
+.clickable{
+    cursor: pointer;
+}
+
+.alert-money-think {
+    color: #ffffff;
+    background-color: #ff9e01;
+    border-color: #e68e00;
+}
+
+.column-search-input-sm {
+    width: 50%;
+    height: 27px;
+}
+
+.column-search-input-md {
+    width: 60%;
+    height: 27px;
+}
+
+.column-search-input-lg {
+    width:70%;
+    height: 27px;
+}
+
+.column-search-input-xlg {
+    width:85%;
+    height: 27px;
+}
+
+
+@media(min-width: 1400px){
+    .my-modal > .modal-lg {
+        width: 1308px;
+    }
+}
+
+
