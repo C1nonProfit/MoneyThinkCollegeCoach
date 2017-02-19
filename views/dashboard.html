@@ -77,15 +77,16 @@
                       <span class="action-icon" ng-show="im.flag === false"  data-toggle="tooltip" title="Click to flag"><i class="fa fa-flag" aria-hidden="true"></i></span>
                       <span class="action-icon" ng-show="im.flag === true" style="color: red" data-toggle="tooltip" title="Click to mark completed"><i class="fa fa-flag" aria-hidden="true"></i></span>
                     </td>
-                    <td ng-click="viewOrCreateStudentProfile()">
+                    <td ng-click="viewOrCreateStudentProfile(im.presentInSystem, im.student)">
                       <span ng-show="im.presentInSystem === true" data-toggle="tooltip" title="Student exist in system"><i class="fa fa-user text-success" aria-hidden="true"></i></span>
                       <span ng-show="im.presentInSystem === false" data-toggle="tooltip" title="Student doesn't in system "><i class="fa fa-user text-danger" aria-hidden="true"></i></span>
                       <span>{{im.phoneNumber}}</span>
                     </td>
-                    <td ng-click="viewOrCreateStudentProfile()">{{im.studentName}}</td>
-                    <td ng-click="viewOrCreateStudentProfile()">{{im.date}}</td>
-                    <td ng-click="viewOrCreateStudentProfile()">{{im.time}}</td>
-                    <td ng-click="viewOrCreateStudentProfile()">{{im.message}}</td>
+                    <td ng-show="im.presentInSystem === true" ng-click="viewOrCreateStudentProfile(im.presentInSystem, im.student)">{{im.student.name}}</td>
+                    <td ng-show="im.presentInSystem === false" ng-click="viewOrCreateStudentProfile(im.presentInSystem, im.student)">Unknown</td>
+                    <td ng-click="viewOrCreateStudentProfile(im.presentInSystem, im.student)">{{im.date}}</td>
+                    <td ng-click="viewOrCreateStudentProfile(im.presentInSystem, im.student)">{{im.time}}</td>
+                    <td ng-click="viewOrCreateStudentProfile(im.presentInSystem, im.student)">{{im.message}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -102,7 +103,7 @@
               <span class="pull-right clickable" ><i class="glyphicon glyphicon-chevron-up"></i></span>
             </div>
             <div class="panel-body">
-              <table class="table table-responsive">
+              <table class="table table-responsive" id="students">
                 <thead>
                 <tr>
                   <th>Actions</th>
@@ -130,13 +131,13 @@
                     <span class="action-icon" ng-show="student.flag === false"  data-toggle="tooltip" title="Click to flag"><i class="fa fa-flag" aria-hidden="true"></i></span>
                     <span class="action-icon" ng-show="student.flag === true" style="color: red" data-toggle="tooltip" title="Click to mark completed"><i class="fa fa-flag" aria-hidden="true"></i></span>
                   </td>
-                  <td>{{student.name}}</td>
-                  <td ng-show="student.interactions == undefined || student.interactions.length === 0"><span>No Interactions Happened</span></td>
-                  <td ng-show="student.interactions != undefined && student.interactions.length != 0"><span>{{student.interactions[student.interactions.length-1].date.day}}</span><span style="padding-left: 20px;">{{student.interactions[student.interactions.length-1].date.time}}</span></td>
-                  <td ng-show="student.interactions == undefined || student.interactions.length === 0"><span>No Latest Notes</span></td>
-                  <td ng-show="student.interactions != undefined && student.interactions.length != 0"><span>{{student.interactions[student.interactions.length-1].message}}</span></td>
-                  <td ng-show="student.tags == undefined || student.tags.length === 0"><span>No Tags Associated</span></td>
-                  <td ng-show="student.tags != undefined && student.tags.length != 0"><span>{{student.tags.toString()}}</span></td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)">{{student.name}}</td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)" ng-show="student.interactions == undefined || student.interactions.length === 0"><span>No Interactions Happened</span></td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)" ng-show="student.interactions != undefined && student.interactions.length != 0"><span>{{student.interactions[student.interactions.length-1].date.day}}</span><span style="padding-left: 20px;">{{student.interactions[student.interactions.length-1].date.time}}</span></td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)" ng-show="student.interactions == undefined || student.interactions.length === 0"><span>No Latest Notes</span></td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)" ng-show="student.interactions != undefined && student.interactions.length != 0"><span>{{student.interactions[student.interactions.length-1].message}}</span></td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)" ng-show="student.tags == undefined || student.tags.length === 0"><span>No Tags Associated</span></td>
+                  <td ng-click="viewOrCreateStudentProfile(true, student)" ng-show="student.tags != undefined && student.tags.length != 0"><span>{{student.tags.toString()}}</span></td>
                 </tr>
                 </tbody>
               </table>

@@ -5,24 +5,98 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     Profile
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-6">
-
+                        <div class="col-md-3">
+                            <lable for="name">Name:</lable>
                         </div>
                         <div class="col-md-6">
-
+                            <input type="text" id="name" name="_name" class="form-control" ng-model="student.name" />
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="cell">Cell <i class="fa fa-mobile" aria-hidden="true"></i>:</lable>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="cell" name="_cell" class="form-control" ng-model="student.contact.phone.cell" />
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="home">Home <i class="fa fa-phone" aria-hidden="true"></i>:</lable>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="home" name="_home" class="form-control" ng-model="student.contact.phone.home" />
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="name">Email:</lable>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" id="email" name="_email" class="form-control" ng-model="student.contact.email.primary" />
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="school">School:</lable>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="school" name="_school" class="form-control" ng-model="student.highSchool" />
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="collegeInterested">Colleges Interested in:</lable>
+                        </div>
+                        <div class="col-md-6">
+                            <textarea id="collegeInterested" name="_collegeInterested"  class="form-control" rows="4"
+                                      ng-model="student.collegesInterestedIn.toString()"/>
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="collegeAccepected">Colleges Accepected to:</lable>
+                        </div>
+                        <div class="col-md-6">
+                            <textarea id="collegeAccepected" name="_collegeAccepected"  class="form-control" rows="2"
+                                      ng-model="student.collegeAcceptedInto.toString()"/>
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="tags">Tags:</lable>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="tags" name="_tags" class="form-control" ng-model="student.tags.toString()" />
+                        </div>
+                    </div>
+                    <div style="height: 15px;"></div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <lable for="tags">Summary:</lable>
+                        </div>
+                        <div class="col-md-6">
+                            <textarea id="summary" name="_summary" class="form-control" rows="5" ng-model="student.summary" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-success">
                 <div class="panel-heading">
                     Log Book
                 </div>
@@ -31,10 +105,10 @@
                         <div class="col-md-12">
                             <table class="table table-responsive">
                                 <colgroup>
-                                    <col width="17%">
-                                    <col width="13%">
-                                    <col width="13%">
-                                    <col width="57%">
+                                    <col width="18%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="42%">
                                 </colgroup>
                                 <thead>
                                     <tr>
@@ -45,18 +119,50 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                    <tr ng-repeat="inter in student.interactions">
+                                        <td>{{inter.media}}</td>
+                                        <td>{{inter.date.day}}</td>
+                                        <td>{{inter.date.time}}</td>
+                                        <td>{{inter.message}}</td>
+                                    </tr>
+                                    <tr ng-show="addLog === true">
+                                        <td>
+                                            <select class="form-control" ng-model="newInteraction.media">
+                                                <option>Select</option>
+                                                <option>SMS</option>
+                                                <option>Email</option>
+                                                <option>Social</option>
+                                                <option>Call</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="date" placeholder="Date" ng-model="newInteraction.date.day" />
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="time" placeholder="Time" ng-model="newInteraction.date.time" />
+                                        </td>
+                                        <td>
+                                            <textarea ng-model="newInteraction.message" rows="6" class="form-control"></textarea>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <button ng-show="addLog === false" class="btn btn-warning" ng-click="addNewLog()">Add Note</button>
+                                <button ng-show="addLog === true" class="btn btn-warning" ng-click="saveNewLog()">Save</button>
+                                <button class="btn btn-default" ng-show="addLog === true" ng-click="cancelNewLog()">Cancel</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button ng-show="flag === false" type="button" class="btn btn-warning" ng-click="submit()">Add</button>
+    <button ng-show="flag === true" type="button" class="btn btn-warning" ng-click="submit()">Update</button>
 </div>

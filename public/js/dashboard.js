@@ -11,16 +11,24 @@ app.controller('ngDashBoardCtrl' , function ($scope, $rootScope ,$http, $uibModa
 
     $http.get('/dashboard/init/incomingMessages').then(function (res) {
         $scope.incomingMessages = res.data.incomingMessages;
+        $http.get('/dashboard/init/students').then(function (res) {
+            $scope.students = res.data.students;
+            for(var i = 0; i < $scope.incomingMessages.length; i++){
+                $scope.incomingMessages[i].presentInSystem = false;
+                for(var j = 0; j < $scope.students.length; j++) {
+                    if($scope.incomingMessages[i].phoneNumber === $scope.students[j].contact.phone.cell){
+                        $scope.incomingMessages[i].student = $scope.students[j];
+                        $scope.incomingMessages[i].presentInSystem = true;
+                        break;
+                    }
+                }
+            }
+        }, function (res) {
+            console.log(res);
+        });
     }, function (res) {
         console.log(res);
     });
-
-    $http.get('/dashboard/init/students').then(function (res) {
-        $scope.students = res.data.students;
-    }, function (res) {
-        console.log(res);
-    });
-
 
     $scope.checkUnreadMessage = function () {
         if(this.incomingMessages == undefined)
@@ -33,7 +41,7 @@ app.controller('ngDashBoardCtrl' , function ($scope, $rootScope ,$http, $uibModa
         return false;
     };
 
-    $scope.viewOrCreateStudentProfile = function(_flag, _studentId) {
+    $scope.viewOrCreateStudentProfile = function(_flag, _student) {
 
         var viewOrCreateStudent = $uibModal.open({
             templateUrl: 'public/templates/viewOrCreateStudent.html',
@@ -45,8 +53,8 @@ app.controller('ngDashBoardCtrl' , function ($scope, $rootScope ,$http, $uibModa
                 flag: function () {
                     return _flag;
                 },
-                studentId: function () {
-                    return _studentId;
+                student: function () {
+                    return _student;
                 }
             }
         });
@@ -77,7 +85,46 @@ $(document).on('click', '.panel-heading span.clickable', function(event){
     event.preventDefault();
 });
 
-app.controller('viewOrCreateStudent' , function ($scope, $http, $uibModalStack, flag, studentId) {
+app.controller('viewOrCreateStudent' , function ($scope, $http, $uibModalStack, flag, student) {
+
+    $scope.flag = flag;
+
+    if(flag) {
+        $scope.student = student;
+    } else {
+        $scope.student = {};
+    }
+
+    $scope.addLog = false;
+
+    $scope.resetToNewLog = function () {
+        $scope.newInteraction = {};
+        $scope.newInteraction.media = "Select";
+        $scope.newInteraction.date = {};
+        $scope.newInteraction.date.day = "02/19/2019";
+        $scope.newInteraction.date.time = "01:20 PM";
+        $scope.newInteraction.date.time = "01:20 PM";
+        $scope.newInteraction.message = "";
+    }
+
+    $scope.resetToNewLog();
+
+    $scope.addNewLog = function () {
+        $scope.addLog = true;
+    };
+
+    $scope.saveNewLog = function () {
+        $scope.addLog = false;
+        if(flag) {
+            student.interactions.push($scope.newInteraction);
+        }
+        $scope.resetToNewLog();
+    };
+
+    $scope.cancelNewLog = function () {
+        $scope.addLog = false;
+        $scope.resetToNewLog();
+    };
 
     $scope.cancel = function () {
         $uibModalStack.dismissAll('cancel');

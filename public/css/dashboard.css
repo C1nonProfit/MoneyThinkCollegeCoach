@@ -33,6 +33,11 @@
     background-color: #e7e7e7;
 }
 
+#students tbody tr:hover {
+    cursor: pointer;
+    background-color: #e7e7e7;
+}
+
 .action-icon {
     padding-left: 2px;
     padding-right: 2px;
@@ -76,7 +81,7 @@
 
 @media(min-width: 1400px){
     .my-modal > .modal-lg {
-        width: 1308px;
+        width: 1400px;
     }
 }
 

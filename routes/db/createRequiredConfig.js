@@ -35,7 +35,7 @@ const incoming_messages =
             "message" : "College student #Support",
             "read" : false,
             "couchName" : "Counselor1",
-            "flag" : false
+            "flag" : false,
         },
         {
             "phoneNumber" : "312-555-1267",
@@ -66,7 +66,7 @@ const students = [
         "name" : "Mickey Mouse",
         "contact" : {
             "phone" : {
-                "cell" : "611-567-9012",
+                "cell" : "312-555-1234",
                 "home" : "612-561-0012"
             },
             "email" : {
